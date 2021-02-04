@@ -117,6 +117,39 @@ class Solution:
             return root
         return construction(0, len(preorder) -1)
 
+#==============================================================================================================
+# 235. Lowest Common Ancestor of a Binary Search Tree
 
+        def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+            if not root:
+                return None
+            if root.val < p.val and root.val < q.val:
+                return self.lowestCommonAncestor(root.right, p, q)
+            if root.val > p.val and root.val > q.val:
+                return self.lowestCommonAncestor(root.left, p, q)
+            return root
 
+#==============================================================================================================
+
+# 236. Lowest Common Ancestor of a Binary Tree
+
+        def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+
+            def lca(root, p, q)
+                if not root:
+                    return None
+                if root == p or root == q:
+                    return root
+                
+                left = lca(root.left, p, q)
+                right = lca(root.right, p, q)
+
+                if left and right :
+                    return root
+                else:
+                    if left:
+                        return left
+                    else:
+                        return right
+            lca(root, p, q)
         
