@@ -152,4 +152,26 @@ class Solution:
                     else:
                         return right
             lca(root, p, q)
+
+#==============================================================================================================
+# 124. Binary Tree Maximum Path Sum
+
+    def maxPathSum(self, root: TreeNode) -> int:
+
+        self.maxsum = float('-inf')
         
+        def DFS(root):
+            if not root: return 0
+            left = DFS(root.left)
+            right = DFS(root.right)
+
+            all_path = root.val + left + right
+            left_path = root.val + left
+            right_path = root.val + right
+
+            self.maxsum = max(self.maxsum, root.val, all_path, left_path, right_path) 
+
+            return max(left_path, right_path, root.val)
+
+        DFS(root)
+        return self.maxsum
