@@ -79,6 +79,67 @@ class Solution:
                 count = 1 + max(Recursive(root.left), Recursive(root.right))
                 return count
         return Recursive(root)
+#================================================================================================================
+# 111. Minimum Depth of Binary Tree
+"""
+Input: root = [3,9,20,null,null,15,7]
+Output: 2
+Example 2:
+
+Input: root = [2,null,3,null,4,null,5,null,6]
+Output: 5
+"""
+    def minDepth(self, root: TreeNode) -> int:
+        ## BFS
+        if not root: return 0
+        count = 1
+        queue = deque([root])
+        while queue:
+            for i in range(len(queue)):
+                node = queue.popleft()
+                if not node: 
+                    continue
+                elif not (node.left or node.right):
+                    return count
+                else:
+                    queue.append(node.left)
+                    queue.append(node.right)
+            count += 1
+        return count
+    
+    
+        ## dfs
+        def dfs(root):
+            if not root: return 0
+            left = dfs(root.left)
+            right = dfs(root.right)
+            if left == 0: return right+1
+            if right == 0: return left+1
+            return min(left,right)+1
+        return dfs(root)
+
+#================================================================================================================
+# 617. Merge Two Binary Trees
+"""
+Input: root1 = [1,3,2,5], root2 = [2,1,3,null,4,null,7]
+Output: [3,4,5,5,4,null,7]
+Example 2:
+
+Input: root1 = [1], root2 = [1,2]
+Output: [2,2]
+"""
+    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+        if not root1:
+            return root2
+        elif not root2:
+            return root1
+        else:
+            return TreeNode(root1.val + root2.val, 
+                            left = self.mergeTrees(root1.left, root2.left),
+                            right = self.mergeTrees(root1.right, root2.right))
+
+
+
 
 #================================================================================================================
 
@@ -175,3 +236,56 @@ class Solution:
 
         DFS(root)
         return self.maxsum
+
+#==============================================================================================================
+# def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+
+"""
+Input: nums = [-10,-3,0,5,9]
+Output: [0,-3,9,-10,null,5]
+Explanation: [0,-10,5,null,-3,null,9] is also accepted:
+
+Input: nums = [1,3]
+Output: [3,1]
+Explanation: [1,3] and [3,1] are both a height-balanced BSTs.
+"""
+
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        if len(nums) == 1:
+            return TreeNode(nums[0])
+        def BST(nums, left, right):
+            if left > right:
+                return None
+            mid = (left+right) // 2
+            left = BST(nums, left, mid-1)
+            right = BST(nums, mid+1, right)
+            return TreeNode(nums[mid], left, right)
+        return BST(nums, 0, len(nums)-1)
+
+
+#==============================================================================================================
+# 112. Path Sum
+'''
+Input: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+Output: true
+'''
+    #BFS
+    def hasPathSum(self, root: TreeNode, targetSum: int) -> bool:
+        
+        if not root:
+                return False
+        
+        queue = deque()
+        queue.append((root, targetSum - root.val))
+        
+        while queue:
+            node, current = queue.popleft()
+            if not node.left and not node.right and current == 0:
+                return True
+            if node.left:
+                queue.append((node.left, current - node.left.val))
+            if node.right:
+                queue.append((node.right, current - node.right.val))
+                
+        return False
+     

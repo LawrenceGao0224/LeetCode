@@ -21,7 +21,7 @@ class Solution:
         intervals.sort()
         last_end = -1
         for start, end in intervals:
-            if start => last_end:
+            if start >= last_end:
                 last_end = end
             else:
                 return False
